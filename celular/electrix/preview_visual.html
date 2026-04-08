@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RepX PRO - Portfólio Slider</title>
+    <style>
+        body {
+            background-color: #0f0f0f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        /* iPhone Frame */
+        .iphone-frame {
+            width: 300px;
+            height: 620px;
+            background: #000;
+            border-radius: 50px;
+            border: 4px solid #222;
+            padding: 12px;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+        }
+
+        .screen-content {
+            background: #000;
+            height: 100%;
+            width: 100%;
+            border-radius: 38px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Slider Logic */
+        .slider-track {
+            display: flex;
+            height: 100%;
+            width: 1100%; /* 11 slides */
+            animation: slideAnimation 33s infinite cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: #0A0A0A;
+            position: relative;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes slideAnimation {
+            0%, 7% { transform: translateX(0); }
+            9.09%, 16.09% { transform: translateX(-9.0909%); }
+            18.18%, 25.18% { transform: translateX(-18.1818%); }
+            27.27%, 34.27% { transform: translateX(-27.2727%); }
+            36.36%, 43.36% { transform: translateX(-36.3636%); }
+            45.45%, 52.45% { transform: translateX(-45.4545%); }
+            54.54%, 61.54% { transform: translateX(-54.5454%); }
+            63.63%, 70.63% { transform: translateX(-63.6363%); }
+            72.72%, 79.72% { transform: translateX(-72.7272%); }
+            81.81%, 88.81% { transform: translateX(-81.8181%); }
+            90.90%, 97.90% { transform: translateX(-90.9090%); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Dots Container */
+        .dots-container {
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            padding: 10px 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            z-index: 20;
+        }
+
+        .dot-bg {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+
+        /* The Moving Red Ping */
+        .active-ping {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #FF0000;
+            border-radius: 50%;
+            left: 15px;
+            box-shadow: 0 0 15px #FF0000, 0 0 5px #FF0000;
+            animation: movePing 33s infinite cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes movePing {
+            0%, 7% { left: 15px; }
+            9.09%, 16.09% { left: 38px; }
+            18.18%, 25.18% { left: 61px; }
+            27.27%, 34.27% { left: 84px; }
+            36.36%, 43.36% { left: 107px; }
+            45.45%, 52.45% { left: 130px; }
+            54.54%, 61.54% { left: 153px; }
+            63.63%, 70.63% { left: 176px; }
+            72.72%, 79.72% { left: 199px; }
+            81.81%, 88.81% { left: 222px; }
+            90.90%, 97.90% { left: 245px; }
+            100% { left: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="iphone-frame">
+        <div class="screen-content">
+            <div class="slider-track">
+                <div class="slide"><img src="./photos/print_E1.jpeg" alt="Tela 1"></div>
+                <div class="slide"><img src="./photos/print_E2.jpeg" alt="Tela 2"></div>
+                <div class="slide"><img src="./photos/print_E3.jpeg" alt="Tela 3"></div>
+                <div class="slide"><img src="./photos/print_E4.jpeg" alt="Tela 4"></div>
+                <div class="slide"><img src="./photos/print_E5.jpeg" alt="Tela 5"></div>
+                <div class="slide"><img src="./photos/print_E6.jpeg" alt="Tela 6"></div>
+                <div class="slide"><img src="./photos/print_E7.jpeg" alt="Tela 7"></div>
+                <div class="slide"><img src="./photos/print_E8.jpeg" alt="Tela 8"></div>
+                <div class="slide"><img src="./photos/print_E9.jpeg" alt="Tela 9"></div>
+                <div class="slide"><img src="./photos/print_E10.jpeg" alt="Tela 10"></div>
+                <div class="slide"><img src="./photos/print_E11.jpeg" alt="Tela 11"></div>
+            </div>
+
+            <div class="dots-container">
+                <div class="dot-bg"></div>
+                <div class="dot-bg"></div>
+                <div class="dot-bg"></div>
+                <div class="dot-bg"></div>
+                <div class="dot-bg"></div>
+                <div class="dot-bg"></div>
+                <div class="dot-bg"></div>
+                <div class="dot-bg"></div>
+                <div class="dot-bg"></div>
+                <div class="dot-bg"></div>
+                <div class="dot-bg"></div>
+                <!-- O ping vermelho que viaja -->
+                <div class="active-ping"></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

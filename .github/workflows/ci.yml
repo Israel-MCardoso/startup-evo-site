@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Detect available scripts
+        id: scripts
+        shell: bash
+        run: |
+          node -e "const scripts = require('./package.json').scripts || {}; console.log('has_lint=' + Boolean(scripts.lint)); console.log('has_type_check=' + Boolean(scripts['type-check']));" >> \"$GITHUB_OUTPUT\"
+
+      - name: Lint
+        if: steps.scripts.outputs.has_lint == 'true'
+        run: npm run lint
+
+      - name: Type check
+        if: steps.scripts.outputs.has_type_check == 'true'
+        run: npm run type-check
+
+      - name: Production build
+        run: npm run build

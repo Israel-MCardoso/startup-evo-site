@@ -1,0 +1,88 @@
+.slider-container {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  position: relative;
+  overflow: hidden;
+}
+
+.slider-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Efeito elástico */
+}
+
+.slide {
+  min-width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app-screenshot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slider-dots-container {
+  position: absolute;
+  bottom: 35px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+.dots-wrapper {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.dot-bg {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+}
+
+/* O "Ping" Vermelho que se move */
+.active-indicator {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #FF0000; /* Vermelho solicitado */
+  border-radius: 50%;
+  top: 8px;
+  left: 12px;
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Movimento avançado com bounce */
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.8), 0 0 5px rgba(255, 0, 0, 0.5);
+}
+
+/* Estica o ping durante o movimento para dar sensação de velocidade */
+.active-indicator.moving {
+  width: 20px;
+  border-radius: 10px;
+}
+
+.slider-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.4);
+  z-index: 15;
+}

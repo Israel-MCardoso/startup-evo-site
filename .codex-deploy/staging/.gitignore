@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.vercel/
+
+vite.log
+vite.err
+*.log
+
+.idea/
+.DS_Store
