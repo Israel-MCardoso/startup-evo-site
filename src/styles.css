@@ -222,7 +222,7 @@ textarea {
   position: sticky;
   top: 0;
   z-index: 50;
-  padding: 1rem 0 0;
+  padding: 0.78rem 0 0;
 }
 
 .nav-shell {
@@ -443,14 +443,14 @@ textarea {
 }
 
 .hero {
-  padding-top: 4.2rem;
+  padding-top: 2.7rem;
   display: grid;
   grid-template-columns: minmax(320px, 0.82fr) minmax(360px, 1.18fr);
-  gap: 1.5rem;
+  gap: clamp(1.6rem, 2.8vw, 3rem);
   align-items: center;
-  min-height: calc(100vh - 140px);
+  min-height: calc(100vh - 116px);
   position: relative;
-  padding-bottom: 5.6rem;
+  padding-bottom: 4.1rem;
   content-visibility: visible;
   contain-intrinsic-size: auto;
 }
@@ -459,7 +459,7 @@ textarea {
   display: grid;
   gap: 1.1rem;
   align-content: center;
-  min-height: 620px;
+  min-height: 540px;
   padding-left: 0.2rem;
 }
 
@@ -3222,6 +3222,45 @@ textarea {
   line-height: 1.8;
 }
 
+.contact-link-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+}
+
+.contact-link-pill {
+  display: grid;
+  gap: 0.12rem;
+  min-width: 180px;
+  padding: 0.82rem 0.95rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 34, 56, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.015)),
+    rgba(10, 10, 12, 0.84);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.contact-link-pill strong {
+  font-size: 0.8rem;
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.contact-link-pill span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.contact-link-pill:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 34, 56, 0.38);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
+}
+
 .final-astronaut-card {
   --unit: 10px;
   justify-self: end;
@@ -3602,6 +3641,10 @@ textarea {
     width: min(100%, 420px);
   }
 
+  .contact-link-pill {
+    min-width: calc(50% - 0.4rem);
+  }
+
   .assembly-iso-stack {
     margin: 2.2rem 0 0 3.2rem;
   }
@@ -3835,6 +3878,14 @@ textarea {
   .hero-copy {
     min-height: auto;
     gap: 0.9rem;
+  }
+
+  .contact-link-list {
+    justify-content: center;
+  }
+
+  .contact-link-pill {
+    min-width: 100%;
   }
 
   .hero h1 {

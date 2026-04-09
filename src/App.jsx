@@ -163,36 +163,70 @@ const faqs = [
   },
 ];
 
-const socialLinks = [
-  {
-    title: 'LinkedIn',
-    handle: '@startup-evo',
-    detail: 'Rede profissional e relacionamento B2B',
-    href: '#contact',
-    icon: <LinkedInIcon />,
-  },
-  {
-    title: 'GitHub',
-    handle: '@startup-evo',
-    detail: 'Projetos, stack e visão técnica',
-    href: '#contact',
-    icon: <GitHubIcon />,
-  },
-  {
-    title: 'Instagram',
-    handle: '@startup.evo',
-    detail: 'Bastidores, novidades e portfólio visual',
-    href: '#contact',
-    icon: <InstagramIcon />,
-  },
-  {
+const contactLinks = {
+  whatsapp: {
     title: 'WhatsApp',
-    handle: 'Orçamento direto',
-    detail: 'Canal rápido para diagnóstico e proposta',
-    href: '#contact',
+    handle: '+55 12 99782-5235',
+    detail: 'Canal mais rápido para diagnóstico, briefing e proposta.',
+    href: 'https://wa.me/5512997825235',
     icon: <WhatsappIcon />,
   },
+  linkedin: {
+    title: 'LinkedIn',
+    handle: 'linkedin.com/in/evo-core',
+    detail: 'Relacionamento profissional, posicionamento e contato institucional.',
+    href: 'https://www.linkedin.com/in/evo-core',
+    icon: <LinkedInIcon />,
+  },
+  github: {
+    title: 'GitHub',
+    handle: 'github.com/evocorecom',
+    detail: 'Portfólio técnico, stack e visão de engenharia da marca.',
+    href: 'https://github.com/evocorecom',
+    icon: <GitHubIcon />,
+  },
+  instagram: {
+    title: 'Instagram',
+    handle: '@evocore_co',
+    detail: 'Bastidores, presença visual e atualizações da Startup Evo.',
+    href: 'https://www.instagram.com/evocore_co?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==',
+    icon: <InstagramIcon />,
+  },
+};
+
+const socialLinks = [
+  contactLinks.linkedin,
+  contactLinks.github,
+  contactLinks.instagram,
+  contactLinks.whatsapp,
 ];
+
+const primaryContactHref = contactLinks.whatsapp.href;
+
+function usePrefersReducedMotion() {
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+      return undefined;
+    }
+
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+
+    updatePreference();
+
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', updatePreference);
+      return () => mediaQuery.removeEventListener('change', updatePreference);
+    }
+
+    mediaQuery.addListener(updatePreference);
+    return () => mediaQuery.removeListener(updatePreference);
+  }, []);
+
+  return prefersReducedMotion;
+}
 
 const layers = [
   'Diagnóstico',
@@ -244,51 +278,12 @@ const navItems = [
   { label: 'FAQ', href: '#faq', glitch: '_FAQ_', code: 'n6' },
 ];
 
-let threeLoaderPromise;
-
-function loadThreeJs() {
-  if (typeof window === 'undefined') {
-    return Promise.reject(new Error('Window indisponível.'));
-  }
-
-  if (window.THREE) {
-    return Promise.resolve(window.THREE);
-  }
-
-  if (threeLoaderPromise) {
-    return threeLoaderPromise;
-  }
-
-  threeLoaderPromise = new Promise((resolve, reject) => {
-    const existingScript = document.querySelector('script[data-three-loader="true"]');
-
-    if (existingScript) {
-      existingScript.addEventListener('load', () => resolve(window.THREE), { once: true });
-      existingScript.addEventListener('error', () => reject(new Error('Falha ao carregar Three.js.')), {
-        once: true,
-      });
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js';
-  script.async = true;
-  script.dataset.threeLoader = 'true';
-  script.onload = () => resolve(window.THREE);
-  script.onerror = () => {
-    threeLoaderPromise = undefined;
-    reject(new Error('Falha ao carregar Three.js.'));
-  };
-  document.head.appendChild(script);
-  });
-
-  return threeLoaderPromise;
-}
-
-function mountInteractiveCube(canvas, shell, THREE) {
-  if (!canvas || !shell || !THREE) {
+function mountInteractiveCube(canvas, shell, threeApi, options = {}) {
+  if (!canvas || !shell || !threeApi) {
     return () => {};
   }
+
+  const { reducedMotion = false } = options;
 
   const getSize = () => {
     const rect = shell.getBoundingClientRect();
@@ -299,13 +294,13 @@ function mountInteractiveCube(canvas, shell, THREE) {
     };
   };
 
-  const scene = new THREE.Scene();
+  const scene = new threeApi.Scene();
   const { width, height } = getSize();
-  const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
+  const camera = new threeApi.PerspectiveCamera(42, width / height, 0.1, 100);
   camera.position.set(0, 0.2, 5.2);
   camera.lookAt(0, 0, 0);
 
-  const renderer = new THREE.WebGLRenderer({
+  const renderer = new threeApi.WebGLRenderer({
     canvas,
     antialias: true,
     alpha: true,
@@ -314,19 +309,20 @@ function mountInteractiveCube(canvas, shell, THREE) {
   renderer.setClearColor(0x000000, 0);
   renderer.setSize(width, height, false);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMapping = threeApi.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.4;
+  canvas.style.cursor = reducedMotion ? 'default' : 'grab';
 
-  const group = new THREE.Group();
+  const group = new threeApi.Group();
   scene.add(group);
 
-  const pmrem = new THREE.PMREMGenerator(renderer);
-  const envScene = new THREE.Scene();
+  const pmrem = new threeApi.PMREMGenerator(renderer);
+  const envScene = new threeApi.Scene();
 
   const addEnvPanel = (widthValue, heightValue, color, position, rotation = [0, 0, 0]) => {
-    const panel = new THREE.Mesh(
-      new THREE.PlaneGeometry(widthValue, heightValue),
-      new THREE.MeshBasicMaterial({ color }),
+    const panel = new threeApi.Mesh(
+      new threeApi.PlaneGeometry(widthValue, heightValue),
+      new threeApi.MeshBasicMaterial({ color }),
     );
     panel.position.set(...position);
     panel.rotation.set(...rotation);
@@ -377,9 +373,9 @@ function mountInteractiveCube(canvas, shell, THREE) {
     context.lineTo(104, 86);
     context.stroke();
 
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
+    const texture = new threeApi.CanvasTexture(canvas);
+    texture.wrapS = threeApi.RepeatWrapping;
+    texture.wrapT = threeApi.RepeatWrapping;
     texture.repeat.set(1.6, 1.6);
     texture.anisotropy = Math.min(renderer.capabilities.getMaxAnisotropy?.() || 1, 4);
     texture.needsUpdate = true;
@@ -388,7 +384,7 @@ function mountInteractiveCube(canvas, shell, THREE) {
   })();
 
   const metalMat = (color) =>
-    new THREE.MeshPhysicalMaterial({
+    new threeApi.MeshPhysicalMaterial({
       color,
       metalness: 0.97,
       roughness: 0.16,
@@ -418,7 +414,7 @@ function mountInteractiveCube(canvas, shell, THREE) {
     const y = -size / 2;
     const widthValue = size;
     const heightValue = size;
-    const shape = new THREE.Shape();
+    const shape = new threeApi.Shape();
 
     shape.moveTo(x + radius, y);
     shape.lineTo(x + widthValue - radius, y);
@@ -430,7 +426,7 @@ function mountInteractiveCube(canvas, shell, THREE) {
     shape.lineTo(x, y + radius);
     shape.quadraticCurveTo(x, y, x + radius, y);
 
-    const geometry = new THREE.ExtrudeGeometry(shape, {
+    const geometry = new threeApi.ExtrudeGeometry(shape, {
       depth: size,
       bevelEnabled: true,
       bevelSegments: 4,
@@ -446,36 +442,36 @@ function mountInteractiveCube(canvas, shell, THREE) {
     return geometry;
   };
   const geo = createRoundedBlockGeometry(BLOCK, 0.07);
-  const edgeGeo = new THREE.EdgesGeometry(geo, 32);
-  const facePanelGeo = new THREE.PlaneGeometry(BLOCK * 0.68, BLOCK * 0.68);
+  const edgeGeo = new threeApi.EdgesGeometry(geo, 32);
+  const facePanelGeo = new threeApi.PlaneGeometry(BLOCK * 0.68, BLOCK * 0.68);
   const blocks = [];
 
   const circuitLine = (offset, length, opacity = 0) => {
     const points = [
-      new THREE.Vector3(offset, -length / 2, 0.002),
-      new THREE.Vector3(offset, -0.02, 0.002),
-      new THREE.Vector3(offset + 0.06, -0.02, 0.002),
-      new THREE.Vector3(offset + 0.06, 0.04, 0.002),
-      new THREE.Vector3(offset, 0.04, 0.002),
-      new THREE.Vector3(offset, length / 2, 0.002),
+      new threeApi.Vector3(offset, -length / 2, 0.002),
+      new threeApi.Vector3(offset, -0.02, 0.002),
+      new threeApi.Vector3(offset + 0.06, -0.02, 0.002),
+      new threeApi.Vector3(offset + 0.06, 0.04, 0.002),
+      new threeApi.Vector3(offset, 0.04, 0.002),
+      new threeApi.Vector3(offset, length / 2, 0.002),
     ];
-    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const geometry = new threeApi.BufferGeometry().setFromPoints(points);
 
-    return new THREE.Line(
+    return new threeApi.Line(
       geometry,
-      new THREE.LineBasicMaterial({
+      new threeApi.LineBasicMaterial({
         color: 0xff2222,
         transparent: true,
         opacity,
-        blending: THREE.AdditiveBlending,
+        blending: threeApi.AdditiveBlending,
       }),
     );
   };
 
   const addFacePanel = (mesh, axis, side, accentOpacity) => {
-    const panel = new THREE.Mesh(
+    const panel = new threeApi.Mesh(
       facePanelGeo,
-      new THREE.MeshBasicMaterial({
+      new threeApi.MeshBasicMaterial({
         color: 0xffffff,
         transparent: true,
         opacity: 0.035,
@@ -497,30 +493,30 @@ function mountInteractiveCube(canvas, shell, THREE) {
 
     mesh.add(panel);
 
-    const detailGroup = new THREE.Group();
-    const detailMaterial = new THREE.LineBasicMaterial({
+    const detailGroup = new threeApi.Group();
+    const detailMaterial = new threeApi.LineBasicMaterial({
       color: 0xff3347,
       transparent: true,
       opacity: accentOpacity,
-      blending: THREE.AdditiveBlending,
+      blending: threeApi.AdditiveBlending,
       depthWrite: false,
     });
     const detailPoints = [
-      new THREE.Vector3(-0.08, -0.09, 0.004),
-      new THREE.Vector3(0.06, -0.09, 0.004),
-      new THREE.Vector3(0.06, -0.02, 0.004),
-      new THREE.Vector3(0.12, -0.02, 0.004),
-      new THREE.Vector3(0.12, 0.08, 0.004),
+      new threeApi.Vector3(-0.08, -0.09, 0.004),
+      new threeApi.Vector3(0.06, -0.09, 0.004),
+      new threeApi.Vector3(0.06, -0.02, 0.004),
+      new threeApi.Vector3(0.12, -0.02, 0.004),
+      new threeApi.Vector3(0.12, 0.08, 0.004),
     ];
-    const detail = new THREE.Line(new THREE.BufferGeometry().setFromPoints(detailPoints), detailMaterial);
-    const node = new THREE.Mesh(
-      new THREE.CircleGeometry(0.013, 12),
-      new THREE.MeshBasicMaterial({
+    const detail = new threeApi.Line(new threeApi.BufferGeometry().setFromPoints(detailPoints), detailMaterial);
+    const node = new threeApi.Mesh(
+      new threeApi.CircleGeometry(0.013, 12),
+      new threeApi.MeshBasicMaterial({
         color: 0xff3347,
         transparent: true,
         opacity: accentOpacity * 1.7,
         depthWrite: false,
-        blending: THREE.AdditiveBlending,
+        blending: threeApi.AdditiveBlending,
       }),
     );
     node.position.set(0.12, 0.08, 0.004);
@@ -542,23 +538,23 @@ function mountInteractiveCube(canvas, shell, THREE) {
           : Math.abs(nx) + Math.abs(ny) + Math.abs(nz) < half + 0.5
             ? 0x4a4a4d
             : 0x3f3f42;
-        const mesh = new THREE.Mesh(geo, getMetalMaterial(blockColor));
+        const mesh = new threeApi.Mesh(geo, getMetalMaterial(blockColor));
         const rx = nx * (BLOCK + GAP);
         const ry = ny * (BLOCK + GAP);
         const rz = nz * (BLOCK + GAP);
         mesh.position.set(rx, ry, rz);
         group.add(mesh);
 
-        const edgeMat = new THREE.LineBasicMaterial({
+        const edgeMat = new threeApi.LineBasicMaterial({
           color: 0xd4d4d6,
           transparent: true,
           opacity: 0.46,
-          blending: THREE.NormalBlending,
+          blending: threeApi.NormalBlending,
         });
-        const edgeLines = new THREE.LineSegments(edgeGeo, edgeMat);
+        const edgeLines = new threeApi.LineSegments(edgeGeo, edgeMat);
         mesh.add(edgeLines);
 
-        const circuitGroup = new THREE.Group();
+        const circuitGroup = new threeApi.Group();
 
         if (Math.abs(nx) >= half && Math.abs(nz) < half) {
           circuitGroup.add(circuitLine(0.12, BLOCK * 0.72, 0));
@@ -608,8 +604,8 @@ function mountInteractiveCube(canvas, shell, THREE) {
     }
   }
 
-  const coreGeo = new THREE.BoxGeometry(BLOCK * 0.5, BLOCK * 0.5, BLOCK * 0.5);
-  const coreMat = new THREE.MeshPhysicalMaterial({
+  const coreGeo = new threeApi.BoxGeometry(BLOCK * 0.5, BLOCK * 0.5, BLOCK * 0.5);
+  const coreMat = new threeApi.MeshPhysicalMaterial({
     color: 0xcc1111,
     emissive: 0xff1111,
     emissiveIntensity: 0,
@@ -621,103 +617,103 @@ function mountInteractiveCube(canvas, shell, THREE) {
     envMap,
     envMapIntensity: 2,
   });
-  const core = new THREE.Mesh(coreGeo, coreMat);
+  const core = new threeApi.Mesh(coreGeo, coreMat);
   group.add(core);
 
-  const nucleusLight = new THREE.PointLight(0xff2222, 0, 5);
+  const nucleusLight = new threeApi.PointLight(0xff2222, 0, 5);
   group.add(nucleusLight);
 
-  const coreGlow = new THREE.Mesh(
-    new THREE.SphereGeometry(BLOCK * 0.8, 16, 16),
-    new THREE.MeshBasicMaterial({
+  const coreGlow = new threeApi.Mesh(
+    new threeApi.SphereGeometry(BLOCK * 0.8, 16, 16),
+    new threeApi.MeshBasicMaterial({
       color: 0xff2222,
       transparent: true,
       opacity: 0,
       depthWrite: false,
-      side: THREE.BackSide,
-      blending: THREE.AdditiveBlending,
+      side: threeApi.BackSide,
+      blending: threeApi.AdditiveBlending,
     }),
   );
   group.add(coreGlow);
 
-  const scanLine = new THREE.Mesh(
-    new THREE.PlaneGeometry(1.6, 0.003),
-    new THREE.MeshBasicMaterial({
+  const scanLine = new threeApi.Mesh(
+    new threeApi.PlaneGeometry(1.6, 0.003),
+    new threeApi.MeshBasicMaterial({
       color: 0xff2222,
       transparent: true,
       opacity: 0,
       depthWrite: false,
-      side: THREE.DoubleSide,
-      blending: THREE.AdditiveBlending,
+      side: threeApi.DoubleSide,
+      blending: threeApi.AdditiveBlending,
     }),
   );
   scanLine.renderOrder = 10;
   group.add(scanLine);
 
-  const scanGlow = new THREE.Mesh(
-    new THREE.PlaneGeometry(1.8, 0.06),
-    new THREE.MeshBasicMaterial({
+  const scanGlow = new threeApi.Mesh(
+    new threeApi.PlaneGeometry(1.8, 0.06),
+    new threeApi.MeshBasicMaterial({
       color: 0xff2222,
       transparent: true,
       opacity: 0,
       depthWrite: false,
-      side: THREE.DoubleSide,
-      blending: THREE.AdditiveBlending,
+      side: threeApi.DoubleSide,
+      blending: threeApi.AdditiveBlending,
     }),
   );
   scanGlow.renderOrder = 9;
   group.add(scanGlow);
 
-  const atomField = new THREE.Group();
+  const atomField = new threeApi.Group();
   atomField.position.z = -0.35;
   atomField.scale.setScalar(1.08);
   group.add(atomField);
 
-  const atomicOrbitGeometry = new THREE.TorusGeometry(1, 0.003, 6, 160);
-  const atomicElectronGeometry = new THREE.SphereGeometry(0.018, 10, 10);
-  const atomicElectronGlowGeometry = new THREE.SphereGeometry(0.05, 10, 10);
+  const atomicOrbitGeometry = new threeApi.TorusGeometry(1, 0.003, 6, 160);
+  const atomicElectronGeometry = new threeApi.SphereGeometry(0.018, 10, 10);
+  const atomicElectronGlowGeometry = new threeApi.SphereGeometry(0.05, 10, 10);
   const atomicOrbits = [
     { radius: 1.65, scaleY: 0.34, speed: 1.15, phase: 0, rotation: [0.25, 0.18, 0.12], opacity: 0.09 },
     { radius: 1.82, scaleY: 0.28, speed: -0.9, phase: 1.8, rotation: [1.08, -0.42, 1.16], opacity: 0.07 },
     { radius: 1.5, scaleY: 0.42, speed: 1.35, phase: 3.2, rotation: [-0.72, 0.64, -0.9], opacity: 0.06 },
   ].map((config) => {
-    const orbitRoot = new THREE.Group();
+    const orbitRoot = new threeApi.Group();
     orbitRoot.rotation.set(...config.rotation);
 
-    const orbit = new THREE.Mesh(
+    const orbit = new threeApi.Mesh(
       atomicOrbitGeometry,
-      new THREE.MeshBasicMaterial({
+      new threeApi.MeshBasicMaterial({
         color: 0x7a1822,
         transparent: true,
         opacity: config.opacity,
         depthWrite: false,
-        side: THREE.DoubleSide,
-        blending: THREE.NormalBlending,
+        side: threeApi.DoubleSide,
+        blending: threeApi.NormalBlending,
       }),
     );
     orbit.scale.set(config.radius, config.radius * config.scaleY, config.radius);
     orbit.renderOrder = 6;
     orbitRoot.add(orbit);
 
-    const electron = new THREE.Group();
-    const electronCore = new THREE.Mesh(
+    const electron = new threeApi.Group();
+    const electronCore = new threeApi.Mesh(
       atomicElectronGeometry,
-      new THREE.MeshBasicMaterial({
+      new threeApi.MeshBasicMaterial({
         color: 0xd73a4a,
         transparent: true,
         opacity: 0.12,
         depthWrite: false,
-        blending: THREE.NormalBlending,
+        blending: threeApi.NormalBlending,
       }),
     );
-    const electronGlow = new THREE.Mesh(
+    const electronGlow = new threeApi.Mesh(
       atomicElectronGlowGeometry,
-      new THREE.MeshBasicMaterial({
+      new threeApi.MeshBasicMaterial({
         color: 0x8a1b27,
         transparent: true,
         opacity: 0.02,
         depthWrite: false,
-        blending: THREE.NormalBlending,
+        blending: threeApi.NormalBlending,
       }),
     );
     electron.add(electronGlow, electronCore);
@@ -728,16 +724,16 @@ function mountInteractiveCube(canvas, shell, THREE) {
     return { ...config, orbitRoot, orbit, electron, electronCore, electronGlow };
   });
 
-  const sparkGeometry = new THREE.SphereGeometry(0.012, 4, 4);
+  const sparkGeometry = new threeApi.SphereGeometry(0.012, 4, 4);
   const sparkPool = [];
   const createSpark = () => {
-    const mesh = new THREE.Mesh(
+    const mesh = new threeApi.Mesh(
       sparkGeometry,
-      new THREE.MeshBasicMaterial({
+      new threeApi.MeshBasicMaterial({
         color: 0xff3333,
         transparent: true,
         opacity: 0,
-        blending: THREE.AdditiveBlending,
+        blending: threeApi.AdditiveBlending,
         depthWrite: false,
       }),
     );
@@ -776,7 +772,7 @@ function mountInteractiveCube(canvas, shell, THREE) {
     lastSpark = now;
   };
 
-  const connectionGroup = new THREE.Group();
+  const connectionGroup = new threeApi.Group();
 
   blocks.forEach((block) => {
     const distance = Math.hypot(block.rx, block.ry, block.rz);
@@ -785,42 +781,42 @@ function mountInteractiveCube(canvas, shell, THREE) {
       return;
     }
 
-    const geometry = new THREE.BufferGeometry().setFromPoints([
-      new THREE.Vector3(0, 0, 0),
-      new THREE.Vector3(block.rx, block.ry, block.rz),
+    const geometry = new threeApi.BufferGeometry().setFromPoints([
+      new threeApi.Vector3(0, 0, 0),
+      new threeApi.Vector3(block.rx, block.ry, block.rz),
     ]);
-    const material = new THREE.LineBasicMaterial({
+    const material = new threeApi.LineBasicMaterial({
       color: 0xff2222,
       transparent: true,
       opacity: 0,
-      blending: THREE.AdditiveBlending,
+      blending: threeApi.AdditiveBlending,
     });
-    connectionGroup.add(new THREE.Line(geometry, material));
+    connectionGroup.add(new threeApi.Line(geometry, material));
     block.connectionMaterial = material;
   });
 
   connectionGroup.visible = false;
   group.add(connectionGroup);
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+  scene.add(new threeApi.AmbientLight(0xffffff, 0.8));
 
-  const directionalLightOne = new THREE.DirectionalLight(0xffffff, 4.8);
+  const directionalLightOne = new threeApi.DirectionalLight(0xffffff, 4.8);
   directionalLightOne.position.set(3.5, 5.5, 6);
   scene.add(directionalLightOne);
 
-  const directionalLightTwo = new THREE.DirectionalLight(0xffffff, 2.4);
+  const directionalLightTwo = new threeApi.DirectionalLight(0xffffff, 2.4);
   directionalLightTwo.position.set(-4, 3, 4);
   scene.add(directionalLightTwo);
 
-  const directionalLightThree = new THREE.DirectionalLight(0xf3f3f3, 1.6);
+  const directionalLightThree = new threeApi.DirectionalLight(0xf3f3f3, 1.6);
   directionalLightThree.position.set(0, -3, 4);
   scene.add(directionalLightThree);
 
-  const pointLightOne = new THREE.PointLight(0xffffff, 1.45, 15);
+  const pointLightOne = new threeApi.PointLight(0xffffff, 1.45, 15);
   pointLightOne.position.set(1.7, 0.8, 3.6);
   scene.add(pointLightOne);
 
-  const pointLightTwo = new THREE.PointLight(0xff2238, 0.85, 10);
+  const pointLightTwo = new threeApi.PointLight(0xff2238, 0.85, 10);
   pointLightTwo.position.set(-2, 3, -2);
   scene.add(pointLightTwo);
 
@@ -835,7 +831,7 @@ function mountInteractiveCube(canvas, shell, THREE) {
   let autoRotate = true;
   let lastInteract = 0;
   let frameId = 0;
-  const coreWorldPosition = new THREE.Vector3();
+  const coreWorldPosition = new threeApi.Vector3();
 
   const handleMouseEnter = () => {
     isHovered = true;
@@ -932,14 +928,17 @@ function mountInteractiveCube(canvas, shell, THREE) {
     camera.updateProjectionMatrix();
   };
 
-  canvas.addEventListener('mouseenter', handleMouseEnter);
-  canvas.addEventListener('mouseleave', handleMouseLeave);
-  canvas.addEventListener('mousedown', handleMouseDown);
-  window.addEventListener('mousemove', handleMouseMove);
-  window.addEventListener('mouseup', handleMouseUp);
-  canvas.addEventListener('touchstart', handleTouchStart, { passive: true });
-  window.addEventListener('touchmove', handleTouchMove, { passive: true });
-  window.addEventListener('touchend', handleTouchEnd);
+  if (!reducedMotion) {
+    canvas.addEventListener('mouseenter', handleMouseEnter);
+    canvas.addEventListener('mouseleave', handleMouseLeave);
+    canvas.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd);
+  }
+
   window.addEventListener('resize', resize);
 
   const resizeObserver =
@@ -952,8 +951,7 @@ function mountInteractiveCube(canvas, shell, THREE) {
   resizeObserver?.observe(shell);
   resize();
 
-  const animate = (timestamp) => {
-    frameId = window.requestAnimationFrame(animate);
+  const renderFrame = (timestamp = 0) => {
     const time = timestamp * 0.001;
     const now = Date.now();
 
@@ -968,7 +966,7 @@ function mountInteractiveCube(canvas, shell, THREE) {
       block.mesh.position.z += (targetZ - block.mesh.position.z) * 0.15;
 
       block.edgeMat.color.set(animState > 0.01 ? 0xff3b4c : 0xd4d4d6);
-      block.edgeMat.blending = animState > 0.01 ? THREE.AdditiveBlending : THREE.NormalBlending;
+      block.edgeMat.blending = animState > 0.01 ? threeApi.AdditiveBlending : threeApi.NormalBlending;
       block.edgeMat.opacity += ((0.5 + animState * 0.12) - block.edgeMat.opacity) * 0.06;
 
       const circuitTarget = isHovered ? 0.06 : 0;
@@ -1073,18 +1071,33 @@ function mountInteractiveCube(canvas, shell, THREE) {
     renderer.render(scene, camera);
   };
 
-  frameId = window.requestAnimationFrame(animate);
+  const animate = (timestamp) => {
+    frameId = window.requestAnimationFrame(animate);
+    renderFrame(timestamp);
+  };
+
+  if (reducedMotion) {
+    animTarget = 0.3;
+    animState = 0.3;
+    autoRotate = false;
+    group.rotation.set(0.18, -0.42, 0.02);
+    renderFrame(0);
+  } else {
+    frameId = window.requestAnimationFrame(animate);
+  }
 
   return () => {
     window.cancelAnimationFrame(frameId);
-    canvas.removeEventListener('mouseenter', handleMouseEnter);
-    canvas.removeEventListener('mouseleave', handleMouseLeave);
-    canvas.removeEventListener('mousedown', handleMouseDown);
-    window.removeEventListener('mousemove', handleMouseMove);
-    window.removeEventListener('mouseup', handleMouseUp);
-    canvas.removeEventListener('touchstart', handleTouchStart);
-    window.removeEventListener('touchmove', handleTouchMove);
-    window.removeEventListener('touchend', handleTouchEnd);
+    if (!reducedMotion) {
+      canvas.removeEventListener('mouseenter', handleMouseEnter);
+      canvas.removeEventListener('mouseleave', handleMouseLeave);
+      canvas.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+      canvas.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', handleTouchEnd);
+    }
     window.removeEventListener('resize', resize);
     resizeObserver?.disconnect();
 
@@ -1195,7 +1208,7 @@ function App() {
             </p>
 
             <div className="cta-row">
-              <QuoteButton href="#contact" />
+              <QuoteButton href={primaryContactHref} />
             </div>
           </div>
 
@@ -1516,10 +1529,24 @@ function App() {
                 processos com inteligência, a Startup Evo pode transformar isso em produto real.
               </p>
               <div className="cta-row">
-                <QuoteButton href="#contact" />
+                <QuoteButton href={primaryContactHref} />
                 <a className="button secondary" href="#portfolio">
                   Ver projetos
                 </a>
+              </div>
+              <div className="contact-link-list">
+                {socialLinks.map((link) => (
+                  <a
+                    className="contact-link-pill"
+                    href={link.href}
+                    key={link.title}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <strong>{link.title}</strong>
+                    <span>{link.handle}</span>
+                  </a>
+                ))}
               </div>
             </div>
 
@@ -1542,7 +1569,7 @@ function QuoteButton({ href }) {
   const second = 'Orcamento';
 
   return (
-    <a className="quote-button-link" href={href} aria-label="Solicitar orçamento">
+    <a className="quote-button-link" href={href} aria-label="Solicitar orçamento" target="_blank" rel="noreferrer">
       <span className="btn-wrapper">
         <span className="btn quote-btn-surface">
           <svg className="btn-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
@@ -1605,6 +1632,7 @@ function HoloCube() {
   const canvasRef = useRef(null);
   const [hasError, setHasError] = useState(false);
   const [isActive, setIsActive] = useState(true);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
     const node = shellRef.current;
@@ -1631,17 +1659,20 @@ function HoloCube() {
     if (!isActive) {
       return undefined;
     }
-
     let cleanup = () => {};
     let cancelled = false;
 
-    loadThreeJs()
-      .then((THREE) => {
+    setHasError(false);
+
+    import('three')
+      .then((threeModule) => {
         if (cancelled) {
           return;
         }
 
-        cleanup = mountInteractiveCube(canvasRef.current, shellRef.current, THREE);
+        cleanup = mountInteractiveCube(canvasRef.current, shellRef.current, threeModule, {
+          reducedMotion: prefersReducedMotion,
+        });
       })
       .catch(() => {
         if (!cancelled) {
@@ -1653,7 +1684,7 @@ function HoloCube() {
       cancelled = true;
       cleanup();
     };
-  }, [isActive]);
+  }, [isActive, prefersReducedMotion]);
 
   return (
     <div className="cube-scene hero-cube-scene" ref={shellRef}>
@@ -1791,7 +1822,7 @@ function SocialTooltipCard({ title, handle, detail, href, icon }) {
         </div>
       </div>
 
-      <a className="icon-card" href={href} aria-label={title}>
+      <a className="icon-card" href={href} aria-label={`${title}: ${handle}`} target="_blank" rel="noreferrer">
         <div className="social-layer">
           <span />
           <span />
