@@ -1282,8 +1282,9 @@ textarea {
 }
 
 .orbit-tag-2 {
-  top: 22%;
-  left: 80%;
+  top: 18%;
+  left: 88%;
+  transform: translate(-18%, -50%);
 }
 
 .orbit-tag-3 {
