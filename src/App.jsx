@@ -114,9 +114,9 @@ const differentiators = [
 
 const faqs = [
   {
-    question: 'Quanto custa um site, sistema ou aplicativo?',
+    question: 'Como funciona o orçamento de um site, sistema ou aplicativo?',
     answer:
-      'O investimento varia conforme escopo, integrações, prazo e nível de personalização. Cada projeto é estruturado sob medida para entregar resultado real, não apenas presença visual.',
+      'O orçamento é definido a partir do escopo, das integrações, do prazo e do nível de personalização. No primeiro contato, entendemos o cenário, alinhamos prioridades e direcionamos a solução mais adequada para a empresa.',
   },
   {
     question: 'Qual é o prazo médio de entrega?',
@@ -1512,15 +1512,15 @@ function App() {
         <section className="section final-cta" id="contact">
           <div className="glass-panel final-shell">
             <div className="final-copy">
-              <p className="eyebrow">Chamada final</p>
-              <h2>Se a sua empresa precisa crescer com mais clareza, eficiência e presença, a Startup Evo constrói a solução certa.</h2>
+              <p className="eyebrow">Próximo passo</p>
+              <h2>Se a sua empresa precisa vender melhor, organizar a operação ou evoluir a presença digital, vamos estruturar a solução certa.</h2>
               <p>
-                Seja para fortalecer posicionamento, organizar operação ou automatizar processos, desenvolvemos produtos digitais com padrão visual forte e base técnica pronta para evoluir.
+                No primeiro contato, entendemos o cenário, identificamos as prioridades do projeto e mostramos o caminho mais inteligente para tirar a ideia do papel com clareza.
               </p>
               <div className="cta-row">
                 <QuoteButton href={primaryContactHref} />
                 <a className="button secondary" href="#portfolio">
-                  Ver projetos
+                  Ver projetos aplicados
                 </a>
               </div>
               <div className="contact-link-list">
@@ -1554,11 +1554,11 @@ function App() {
 }
 
 function QuoteButton({ href }) {
-  const first = 'Solicitar';
-  const second = 'Orcamento';
+  const first = 'Falar agora';
+  const second = 'no WhatsApp';
 
   return (
-    <a className="quote-button-link" href={href} aria-label="Solicitar orçamento" target="_blank" rel="noreferrer">
+    <a className="quote-button-link" href={href} aria-label="Falar agora no WhatsApp" target="_blank" rel="noreferrer">
       <span className="btn-wrapper">
         <span className="btn quote-btn-surface">
           <svg className="btn-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
