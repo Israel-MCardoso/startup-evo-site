@@ -112,24 +112,6 @@ const differentiators = [
   'Suporte contínuo após a entrega',
 ];
 
-const testimonials = [
-  {
-    name: 'Cliente parceiro',
-    role: 'Experiência do projeto',
-    text: 'Aqui entra o relato de quem acompanhou o processo, validou a entrega e percebeu impacto real na operação ou presença digital.',
-  },
-  {
-    name: 'Gestor da empresa',
-    role: 'Resultado entregue',
-    text: 'Este espaço pode destacar ganhos como mais clareza comercial, automações, performance, organização de processos e evolução visual.',
-  },
-  {
-    name: 'Time atendido',
-    role: 'Parceria contínua',
-    text: 'Use este card para mostrar como a Startup Evo acompanha melhorias após a entrega e mantém a solução pronta para crescer.',
-  },
-];
-
 const faqs = [
   {
     question: 'Quanto custa um site ou sistema?',
@@ -1128,6 +1110,7 @@ function mountInteractiveCube(canvas, shell, threeApi, options = {}) {
 
 function App() {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const [openServiceIndex, setOpenServiceIndex] = useState(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -1141,6 +1124,21 @@ function App() {
   }, []);
 
   const closeMobileNav = () => setIsMobileNavOpen(false);
+
+  const toggleServiceCard = (index) => {
+    setOpenServiceIndex((current) => (current === index ? null : index));
+  };
+
+  const handleServiceCardKeyDown = (event, index) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      toggleServiceCard(index);
+    }
+
+    if (event.key === 'Escape') {
+      setOpenServiceIndex(null);
+    }
+  };
 
   return (
     <div className="page-shell">
@@ -1300,29 +1298,62 @@ function App() {
           </div>
 
           <div className="services-grid">
-            {services.map((service) => (
-              <article className="service-card" key={service.title}>
-                <div className="service-card-content">
-                  <div className="service-face service-front">
-                    <div className="service-orb service-orb-one" />
-                    <div className="service-orb service-orb-two" />
-                    <div className="service-orb service-orb-three" />
-                    <h3>{service.title}</h3>
-                  </div>
+            {services.map((service, index) => {
+              const isFlipped = openServiceIndex === index;
 
-                  <div className="service-face service-back">
-                    <div className="service-back-content">
-                      <span className="service-badge">{service.badge}</span>
-                      <p>{service.description}</p>
-                      <a href="#contact" className="link-inline">
-                        Saiba mais
-                        <ArrowIcon />
-                      </a>
+              return (
+                <article
+                  className={`service-card ${isFlipped ? 'is-flipped' : ''}`}
+                  key={service.title}
+                  role="button"
+                  tabIndex={0}
+                  aria-expanded={isFlipped}
+                  aria-label={`Abrir detalhes de ${service.title}`}
+                  onClick={() => toggleServiceCard(index)}
+                  onKeyDown={(event) => handleServiceCardKeyDown(event, index)}
+                >
+                  <div className="service-card-content">
+                    <div className="service-face service-front">
+                      <div className="service-orb service-orb-one" />
+                      <div className="service-orb service-orb-two" />
+                      <div className="service-orb service-orb-three" />
+                      <h3>{service.title}</h3>
+                      <span className="service-card-hint">Toque ou pressione Enter para ver detalhes</span>
+                    </div>
+
+                    <div className="service-face service-back">
+                      <div className="service-back-content">
+                        <div className="service-top">
+                          <span className="service-badge">{service.badge}</span>
+                          <button
+                            type="button"
+                            className="service-card-close"
+                            aria-label={`Fechar detalhes de ${service.title}`}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              setOpenServiceIndex(null);
+                            }}
+                          >
+                            Fechar
+                          </button>
+                        </div>
+                        <p>{service.description}</p>
+                        <a
+                          href={primaryContactHref}
+                          className="link-inline"
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={(event) => event.stopPropagation()}
+                        >
+                          Falar sobre este serviço
+                          <ArrowIcon />
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </article>
-            ))}
+                </article>
+              );
+            })}
           </div>
 
           <div className="services-experience">
@@ -1463,34 +1494,6 @@ function App() {
                 </div>
                 <p>{item}</p>
                 <span className="differential-line" />
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="section testimonials" id="testimonials">
-          <div className="section-heading">
-            <p className="eyebrow">Depoimentos</p>
-            <h2>Resultados reais merecem uma vitrine com presença e credibilidade.</h2>
-            <p className="section-summary">
-              Este espaço foi pensado para reunir feedbacks de clientes, relatos de parceria e
-              percepções sobre a evolução gerada por cada projeto entregue.
-            </p>
-          </div>
-
-          <div className="testimonials-grid">
-            {testimonials.map((item) => (
-              <article className="testimonial-card" key={item.name}>
-                <span className="testimonial-quote" aria-hidden="true">“</span>
-                <div className="testimonial-head">
-                  <div className="testimonial-avatar">{item.name.slice(0, 2).toUpperCase()}</div>
-                  <div>
-                    <h3>{item.name}</h3>
-                    <p className="mini-label">{item.role}</p>
-                  </div>
-                </div>
-                <p>{item.text}</p>
-                <span className="testimonial-status">Feedback reservado</span>
               </article>
             ))}
           </div>
