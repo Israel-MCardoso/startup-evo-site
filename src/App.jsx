@@ -4,85 +4,85 @@ import ModernBackground from './components/ModernBackground';
 
 const brand = {
   name: 'Startup Evo',
-  label: 'Studio Digital | Sites, Sistemas, Apps e IA',
+  label: 'Studio Digital | Sites, Sistemas, Apps e Automação',
 };
 
 const services = [
   {
     title: 'Desenvolvimento de Sites',
-    description: 'Sites institucionais premium com foco em presença digital, conversão e autoridade.',
+    description: 'Sites institucionais com estética premium, posicionamento forte e estrutura pensada para gerar autoridade e oportunidades.',
     badge: 'WEB',
   },
   {
     title: 'Landing Pages',
-    description: 'Páginas de campanha desenhadas para gerar leads, vendas e validação de ofertas.',
+    description: 'Páginas de campanha desenhadas para conversão, validação de ofertas e geração de leads com clareza comercial.',
     badge: 'LP',
   },
   {
     title: 'Sistemas Web',
-    description: 'Plataformas sob medida para processos internos, operação e gestão empresarial.',
+    description: 'Plataformas sob medida para organizar processos, centralizar operação e sustentar crescimento com mais controle.',
     badge: 'SYS',
   },
   {
     title: 'Aplicativos Mobile',
-    description: 'Experiências mobile para produtos, equipes comerciais e operações em campo.',
+    description: 'Aplicativos para produto, força comercial e operação em campo, com experiência fluida e foco em usabilidade real.',
     badge: 'APP',
   },
   {
     title: 'Automações Empresariais',
-    description: 'Fluxos inteligentes para reduzir trabalho manual e acelerar resultados.',
+    description: 'Fluxos inteligentes para reduzir tarefas repetitivas, ganhar velocidade e aumentar a eficiência do time.',
     badge: 'AUTO',
   },
   {
     title: 'Integrações com APIs',
-    description: 'Conexão entre sistemas, ERPs, CRMs, gateways, IA e plataformas de terceiros.',
+    description: 'Conexões entre sistemas, ERPs, CRMs, gateways, IA e serviços terceiros para uma operação mais integrada.',
     badge: 'API',
   },
   {
     title: 'Dashboards',
-    description: 'Painéis analíticos com dados claros para decisões rápidas e acompanhamento real.',
+    description: 'Painéis com leitura clara dos dados para acompanhar indicadores, enxergar gargalos e decidir com mais rapidez.',
     badge: 'DATA',
   },
   {
     title: 'CRM e ERP Personalizados',
-    description: 'Soluções operacionais moldadas ao processo da sua empresa, sem engessar o negócio.',
+    description: 'Soluções operacionais moldadas ao fluxo real da empresa, sem limitar o negócio a ferramentas genéricas.',
     badge: 'OPS',
   },
   {
     title: 'Hospedagem e Manutenção',
-    description: 'Suporte contínuo, evolução técnica e monitoramento para manter tudo em alta performance.',
+    description: 'Acompanhamento técnico, estabilidade, melhorias contínuas e suporte para manter o projeto evoluindo com segurança.',
     badge: 'CARE',
   },
 ];
 
 const processSteps = [
   {
-    title: 'Reunião inicial',
-    description: 'Entendemos objetivo, público, prioridade comercial e o nível de presença digital esperado.',
+    title: 'Diagnóstico inicial',
+    description: 'Mapeamos objetivo, contexto comercial, público e prioridades para construir a solução certa desde o começo.',
   },
   {
-    title: 'Planejamento estratégico',
-    description: 'Definimos escopo, arquitetura, etapas de entrega e o caminho mais seguro para construir.',
+    title: 'Arquitetura estratégica',
+    description: 'Definimos escopo, estrutura, fluxos, integrações e a base técnica necessária para crescer com consistência.',
   },
   {
     title: 'Direção visual',
-    description: 'Criamos a linguagem da interface com foco em autoridade, clareza e identidade forte.',
+    description: 'Criamos uma interface com presença, clareza e identidade para comunicar valor antes mesmo da primeira interação.',
   },
   {
     title: 'Desenvolvimento',
-    description: 'Transformamos design em produto funcional, responsivo e pronto para evoluir com o negócio.',
+    description: 'Transformamos conceito em produto funcional, responsivo e pronto para operar no ritmo real da empresa.',
   },
   {
     title: 'Integrações e automações',
-    description: 'Conectamos APIs, dados e fluxos inteligentes para reduzir trabalho manual e ganhar escala.',
+    description: 'Conectamos ferramentas, dados e rotinas para reduzir fricção operacional e liberar escala com inteligência.',
   },
   {
-    title: 'Testes e refinamento',
-    description: 'Validamos experiência, performance, responsividade e detalhes antes da entrega final.',
+    title: 'Validação e refinamento',
+    description: 'Revisamos performance, responsividade, experiência e detalhes críticos antes da publicação.',
   },
   {
-    title: 'Entrega com suporte',
-    description: 'Publicamos com segurança e mantemos acompanhamento para ajustes, melhorias e expansão.',
+    title: 'Publicação e evolução',
+    description: 'Colocamos no ar com segurança e seguimos ao lado do projeto para ajustes, expansão e novas entregas.',
   },
 ];
 
@@ -102,46 +102,46 @@ const techStack = [
 ];
 
 const differentiators = [
-  'Projetos 100% personalizados',
-  'Design moderno com identidade forte',
-  'Desenvolvimento rápido e escalável',
-  'Integrações avançadas entre sistemas',
-  'Automações inteligentes com foco em produtividade',
-  'Atendimento próximo e estratégico',
-  'Arquitetura pronta para crescer',
-  'Suporte contínuo após a entrega',
+  'Estratégia alinhada ao objetivo do negócio',
+  'Design premium com clareza de comunicação',
+  'Tecnologia sob medida, sem soluções engessadas',
+  'Integrações que conectam operação e crescimento',
+  'Automação orientada a ganho real de produtividade',
+  'Atendimento próximo durante todo o projeto',
+  'Arquitetura pronta para evolução contínua',
+  'Suporte após a entrega para manter consistência',
 ];
 
 const faqs = [
   {
-    question: 'Quanto custa um site ou sistema?',
+    question: 'Quanto custa um site, sistema ou aplicativo?',
     answer:
-      'O investimento depende do escopo, integrações, prazo e nível de personalização. A Startup Evo trabalha com projetos sob medida para alinhar design, tecnologia e objetivo de negócio.',
+      'O investimento varia conforme escopo, integrações, prazo e nível de personalização. Cada projeto é estruturado sob medida para entregar resultado real, não apenas presença visual.',
   },
   {
-    question: 'Quanto tempo leva para desenvolver?',
+    question: 'Qual é o prazo médio de entrega?',
     answer:
-      'Landing pages podem sair em poucas semanas. Sistemas, apps e plataformas maiores dependem do nível de complexidade, regras de negócio e integrações envolvidas.',
+      'Landing pages podem ser entregues em poucas semanas. Sistemas, automações e aplicativos dependem da complexidade, das regras do negócio e das integrações necessárias.',
   },
   {
-    question: 'Vocês fazem manutenção e evolução contínua?',
+    question: 'Vocês seguem após a publicação?',
     answer:
-      'Sim. Podemos seguir com suporte, melhorias, monitoramento, correções e novas entregas depois do lançamento.',
+      'Sim. Podemos continuar com manutenção, melhorias, suporte técnico, novas funcionalidades e acompanhamento estratégico da solução.',
   },
   {
-    question: 'Vocês criam aplicativos e automações?',
+    question: 'A Startup Evo também cria automações e apps?',
     answer:
-      'Sim. Atuamos tanto em aplicações web e mobile quanto em automações empresariais, integrações com APIs e fluxos inteligentes.',
+      'Sim. Atuamos em sites, sistemas, aplicativos e automações empresariais, sempre conectando design, operação e tecnologia em uma mesma visão.',
   },
   {
-    question: 'É possível integrar com ERP, CRM e sistemas legados?',
+    question: 'É possível integrar com ERP, CRM e sistemas internos?',
     answer:
-      'Sim. Projetamos integrações com APIs, bancos de dados, plataformas internas e serviços de terceiros para centralizar processos.',
+      'Sim. Projetamos integrações com APIs, bancos de dados, plataformas internas e serviços terceiros para centralizar fluxos e reduzir retrabalho.',
   },
   {
-    question: 'O projeto é personalizado ou usa template pronto?',
+    question: 'O projeto é realmente personalizado?',
     answer:
-      'A abordagem é personalizada. Estrutura, visual, experiência, automações e arquitetura são moldados ao contexto da empresa e à meta do projeto.',
+      'Sim. Estrutura, interface, experiência e arquitetura são construídas conforme a necessidade da empresa, sem depender de templates genéricos como base principal.',
   },
 ];
 
@@ -246,9 +246,9 @@ const panelModes = [
 ];
 
 const serviceFlow = [
-  'Entendimento do objetivo, do público e da estrutura necessária.',
-  'Direção visual com foco em clareza, percepção premium e conversão.',
-  'Desenvolvimento, integrações e suporte para publicar com segurança.',
+  'Entendimento profundo do cenário, da meta comercial e da estrutura necessária para o projeto.',
+  'Construção da direção visual com foco em percepção premium, clareza e posicionamento.',
+  'Desenvolvimento, integração e publicação com base sólida para evolução contínua.',
 ];
 
 const navItems = [
@@ -1200,9 +1200,8 @@ function App() {
             <p className="eyebrow hero-kicker">WE ARE</p>
             <h1>STARTUP EVO</h1>
             <p className="lead">
-              Desenvolvemos sites, sistemas, aplicativos e automações inteligentes para
-              empresas que querem crescer com presença forte, operação fluida e tecnologia
-              pronta para escalar.
+              Criamos sites, sistemas, aplicativos e automações para empresas que precisam unir
+              presença forte, operação mais organizada e tecnologia pronta para acompanhar o crescimento.
             </p>
 
             <div className="cta-row">
@@ -1220,10 +1219,9 @@ function App() {
         <section className="section about" id="about">
           <div className="section-heading">
             <p className="eyebrow">Sobre a Startup Evo</p>
-            <h2>Autoridade visual, tecnologia moderna e execução sob medida.</h2>
+            <h2>Design com presença, tecnologia sob medida e execução pensada para negócio.</h2>
             <p className="section-summary">
-              A proposta aqui é simples: mostrar quem somos, como pensamos e por que a entrega
-              é desenhada para parecer premium sem perder clareza.
+              A Startup Evo une direção visual forte, clareza estratégica e construção técnica para transformar necessidade empresarial em produto real.
             </p>
           </div>
 
@@ -1246,15 +1244,11 @@ function App() {
 
                 <div className="about-story-copy">
                   <p>
-                    A <strong>Startup Evo</strong> nasce com foco em criar soluções digitais que
-                    unem design de alto nível, clareza estratégica e tecnologia escalável. A ideia
-                    é simples: cada projeto precisa parecer premium, funcionar com precisão e gerar
-                    valor real para o negócio.
+                    A <strong>Startup Evo</strong> foi criada para desenvolver soluções digitais que
+                    posicionam melhor a marca, organizam a operação e sustentam crescimento com mais clareza. Cada entrega precisa comunicar valor, funcionar com precisão e acompanhar a evolução do negócio.
                   </p>
                   <p>
-                    Trabalhamos com visão de produto, atendimento personalizado e construção
-                    orientada à performance. Não entregamos só páginas bonitas. Entregamos sistemas
-                    que posicionam, organizam e fazem a empresa evoluir.
+                    Trabalhamos com visão de produto, leitura estratégica do cenário e desenvolvimento orientado à performance. O objetivo nunca é apenas ficar bonito: é construir algo que gere percepção premium, eficiência operacional e resultado concreto.
                   </p>
                 </div>
               </div>
@@ -1271,15 +1265,15 @@ function App() {
                 <div className="note-list">
                   <div className="note-item">
                     <strong>Clareza</strong>
-                    <span>Cada seção precisa explicar algo útil para o cliente.</span>
+                    <span>Cada tela precisa comunicar valor com objetividade, sem ruído nem excesso.</span>
                   </div>
                   <div className="note-item">
                     <strong>Precisão</strong>
-                    <span>Design, copy e tecnologia são definidos em cima do objetivo real.</span>
+                    <span>Design, copy e tecnologia são decididos com base na meta real do projeto.</span>
                   </div>
                   <div className="note-item">
                     <strong>Escala</strong>
-                    <span>O projeto nasce pronto para crescer, integrar e evoluir.</span>
+                    <span>A estrutura já nasce preparada para integrar, crescer e evoluir com segurança.</span>
                   </div>
                 </div>
               </article>
@@ -1290,10 +1284,9 @@ function App() {
         <section className="section services" id="services">
           <div className="section-heading">
             <p className="eyebrow">Serviços</p>
-            <h2>Estrutura completa para marcas que precisam vender, operar e escalar.</h2>
+            <h2>Soluções pensadas para empresas que precisam vender melhor, operar melhor e crescer com consistência.</h2>
             <p className="section-summary">
-              Nesta parte o objetivo é deixar claro o que a Startup Evo pode construir e como
-              isso se organiza em frentes de entrega mais objetivas.
+              A Startup Evo estrutura cada entrega para responder necessidades reais de posicionamento, processo, produto e escala.
             </p>
           </div>
 
@@ -1345,7 +1338,7 @@ function App() {
                           rel="noreferrer"
                           onClick={(event) => event.stopPropagation()}
                         >
-                          Falar sobre este serviço
+                          Solicitar este serviço
                           <ArrowIcon />
                         </a>
                       </div>
@@ -1367,10 +1360,9 @@ function App() {
               <div className="service-context-inner">
                 <div className="service-context-ray" />
                 <p className="mini-label">Como um projeto ganha forma</p>
-                <h3>Processo com intenção em cada bloco.</h3>
+                <h3>Estratégia, interface e tecnologia trabalhando na mesma direção.</h3>
                 <p>
-                  Cada entrega começa pelo objetivo, passa por direção visual e termina com uma
-                  solução pronta para operar, integrar e evoluir.
+                  Cada projeto começa pelo objetivo do negócio, ganha forma na direção visual e chega à entrega com base técnica pronta para operar e evoluir.
                 </p>
                 <div className="service-context-list">
                   {serviceFlow.map((item) => (
@@ -1391,10 +1383,9 @@ function App() {
         <section className="section portfolio" id="portfolio">
           <div className="section-heading">
             <p className="eyebrow">Portfólio</p>
-            <h2>Casos estruturados para mostrar profundidade técnica e resultado percebido.</h2>
+            <h2>Projetos pensados para mostrar resultado, profundidade técnica e valor percebido.</h2>
             <p className="section-summary">
-              Aqui a navegação deixa de ser conceitual e passa a mostrar entregas, tecnologia,
-              tempo de execução e benefício gerado.
+              Aqui a proposta sai do discurso e vira entrega: aplicação real, stack utilizada, contexto de execução e ganho percebido no projeto.
             </p>
           </div>
 
@@ -1404,10 +1395,9 @@ function App() {
         <section className="section process" id="process">
           <div className="section-heading">
             <p className="eyebrow">Processo de trabalho</p>
-            <h2>Um fluxo claro para transformar visão em entrega com confiança.</h2>
+            <h2>Um processo claro para transformar visão em entrega com segurança.</h2>
             <p className="section-summary">
-              Esta seção existe para passar organização. O cliente precisa entender que existe
-              método antes, durante e depois da entrega.
+              A estrutura de trabalho foi desenhada para transmitir método, organização e previsibilidade do primeiro contato até a publicação.
             </p>
           </div>
 
@@ -1432,10 +1422,9 @@ function App() {
 
             <div className="process-feature">
               <p className="mini-label">Pipeline ativo</p>
-              <h3>Cada fase deixa a próxima mais inteligente.</h3>
+              <h3>Cada etapa prepara a próxima com mais clareza e precisão.</h3>
               <p>
-                O processo foi desenhado para transmitir organização, direção criativa e alto
-                nível técnico desde o primeiro contato até a sustentação do produto.
+                O fluxo foi desenhado para reduzir improviso, fortalecer a direção criativa e manter o projeto consistente do briefing à sustentação do produto.
               </p>
               <AssemblyLoader />
             </div>
@@ -1445,7 +1434,7 @@ function App() {
         <section className="section tech" id="tech">
           <div className="section-heading">
             <p className="eyebrow">Tecnologias utilizadas</p>
-            <h2>Stack moderna para front-end, back-end, cloud, mobile e automações.</h2>
+            <h2>Tecnologia moderna para construir interfaces fortes, operações sólidas e produtos prontos para evoluir.</h2>
           </div>
 
           <div className="tech-layout">
@@ -1479,8 +1468,7 @@ function App() {
             <p className="eyebrow">Diferenciais</p>
             <h2>Por que empresas escolhem uma entrega sob medida em vez de uma solução genérica.</h2>
             <p className="section-summary">
-              Um resumo direto do que diferencia a Startup Evo em experiência, tecnologia e
-              acompanhamento.
+              O diferencial está em alinhar estética, clareza, operação e tecnologia em uma mesma entrega, com acompanhamento próximo do início ao pós-lançamento.
             </p>
           </div>
 
@@ -1502,10 +1490,9 @@ function App() {
         <section className="section faq" id="faq">
           <div className="section-heading">
             <p className="eyebrow">FAQ</p>
-            <h2>Respostas objetivas para tirar dúvidas antes do primeiro contato.</h2>
+            <h2>Respostas claras para reduzir dúvida e acelerar a decisão.</h2>
             <p className="section-summary">
-              Organizamos as perguntas mais comuns para deixar claro como orçamento, prazo,
-              suporte e integrações funcionam dentro da Startup Evo.
+              Reunimos as perguntas mais comuns para explicar com objetividade como funcionam escopo, prazo, suporte e integrações dentro da Startup Evo.
             </p>
           </div>
 
@@ -1526,10 +1513,9 @@ function App() {
           <div className="glass-panel final-shell">
             <div className="final-copy">
               <p className="eyebrow">Chamada final</p>
-              <h2>Sua empresa precisa de tecnologia para crescer. Nós criamos a solução ideal para você.</h2>
+              <h2>Se a sua empresa precisa crescer com mais clareza, eficiência e presença, a Startup Evo constrói a solução certa.</h2>
               <p>
-                Se a ideia é posicionar melhor sua marca, organizar sua operação ou automatizar
-                processos com inteligência, a Startup Evo pode transformar isso em produto real.
+                Seja para fortalecer posicionamento, organizar operação ou automatizar processos, desenvolvemos produtos digitais com padrão visual forte e base técnica pronta para evoluir.
               </p>
               <div className="cta-row">
                 <QuoteButton href={primaryContactHref} />
